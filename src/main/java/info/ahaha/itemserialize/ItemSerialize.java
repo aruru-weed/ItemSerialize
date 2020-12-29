@@ -35,7 +35,7 @@ public final class ItemSerialize {
         try {
             Class<?> nbtTagCompoundClass = getNMSClass("NBTTagCompound");
 
-            Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", InputStream.class).invoke(null, inputStream);
+            Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", DataInput.class).invoke(null, new DataInputStream(inputStream));
 
             // net.minecraft.server.v1_16_R3.ItemStack nmsItem = net.minecraft.server.v1_16_R3.ItemStack.a(nbtTagCompoundRoot);
             Class<?> nmsItemStackClass = getNMSClass("ItemStack");
