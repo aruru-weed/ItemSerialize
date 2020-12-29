@@ -1,16 +1,12 @@
 package info.ahaha.itemserialize;
 
-import com.google.common.io.BaseEncoding;
 import net.minecraft.server.v1_16_R3.NBTCompressedStreamTools;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import net.minecraft.server.v1_16_R3.NBTTagList;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 
 public final class ItemSerialize {
