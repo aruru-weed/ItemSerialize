@@ -1,16 +1,15 @@
 package info.ahaha.itemserialize;
 
+import com.google.common.io.BaseEncoding;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 
-public final class ItemSerialize extends JavaPlugin {
+public final class ItemSerialize {
     public static ItemStack deserializeItemStack(String data) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
         DataInputStream dataInputStream = new DataInputStream(inputStream);
@@ -19,8 +18,7 @@ public final class ItemSerialize extends JavaPlugin {
         try {
             Class<?> nbtTagCompoundClass = getNMSClass("NBTTagCompound");
             Class<?> nmsItemStackClass = getNMSClass("ItemStack");
-            Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", DataInputStream.class).invoke(null, dataInputStream);
-            //Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", DataInputStream.class).invoke(null, inputStream);
+            Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", InputStream.class).invoke(null, dataInputStream);
             Object craftItemStack = nmsItemStackClass.getMethod("createStack", nbtTagCompoundClass).invoke(null, nbtTagCompound);
             itemStack = (ItemStack) getOBClass("inventory.CraftItemStack").getMethod("asBukkitCopy", nmsItemStackClass).invoke(null, craftItemStack);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -45,8 +43,7 @@ public final class ItemSerialize extends JavaPlugin {
         } catch (SecurityException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
-        //return BaseEncoding.base64().encode(outputStream.toByteArray());
+//        return BaseEncoding.base64().encode(outputStream.toByteArray());
         return new BigInteger(1, outputStream.toByteArray()).toString(32);
     }
 
